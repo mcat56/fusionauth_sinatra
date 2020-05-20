@@ -16,4 +16,5 @@ group :test do
 	gem 'shoulda-matchers'
 	gem 'simplecov'
 	gem 'rack-test'
+	gem 'database_cleaner-active_record'
 end
