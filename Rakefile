@@ -1,9 +1,8 @@
 require 'rspec/core'
 require 'rspec/core/rake_task'
-require './routes'
+require './app'
 task :default => :spec
 desc "Run all specs in spec directory (excluding plugin specs)"
 RSpec::Core::RakeTask.new(:spec)
 require 'sinatra/activerecord'
 require 'sinatra/activerecord/rake'
-require './app'
