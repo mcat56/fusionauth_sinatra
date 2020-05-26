@@ -9,6 +9,7 @@ gem 'rake'
 gem 'rspec'
 gem 'pry'
 gem 'dotenv'
+gem 'fusionauth_client'
 
 
 group :test do
