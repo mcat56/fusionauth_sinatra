@@ -24,9 +24,16 @@ GEM
       xpath (~> 3.2)
     coderay (1.1.2)
     concurrent-ruby (1.1.6)
+    daemons (1.3.1)
+    database_cleaner (1.8.5)
+    database_cleaner-active_record (1.8.0)
+      activerecord
+      database_cleaner (~> 1.8.0)
     diff-lcs (1.3)
     docile (1.3.2)
     dotenv (2.7.5)
+    eventmachine (1.2.7)
+    fusionauth_client (1.16.0)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     method_source (1.0.0)
@@ -77,6 +84,10 @@ GEM
     sinatra-activerecord (2.0.18)
       activerecord (>= 4.1)
       sinatra (>= 1.0)
+    thin (1.7.2)
+      daemons (~> 1.0, >= 1.0.9)
+      eventmachine (~> 1.0, >= 1.0.4)
+      rack (>= 1, < 3)
     thread_safe (0.3.6)
     tilt (2.0.10)
     tzinfo (1.2.7)
@@ -91,7 +102,9 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   capybara
+  database_cleaner-active_record
   dotenv
+  fusionauth_client
   pg
   pry
   rack-test
@@ -101,6 +114,7 @@ DEPENDENCIES
   simplecov
   sinatra
   sinatra-activerecord
+  thin
 
 BUNDLED WITH
    2.1.4
