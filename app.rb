@@ -19,8 +19,16 @@ class FusionAuthApp < Sinatra::Base
     )
   end
 
+  def application_id
+    '9eef04cd-b188-42fa-b535-1962ff788b46'
+  end
+
   get '/' do
     erb :'welcome/index'
+  end
+
+  get '/login' do
+    erb :'/sessions/new'
   end
 
   get '/register' do
@@ -39,18 +47,24 @@ class FusionAuthApp < Sinatra::Base
         :password => user_data[:password]
       },
       :registration => {
-        :applicationId => '9eef04cd-b188-42fa-b535-1962ff788b46',
+        :applicationId => application_id,
         :preferredLanguages => %w(en fr),
         :roles => %w(user)
       }
     })
-
-
-    require "pry"; binding.pry
+    session[:user_id] = id
     erb :'/users/show'
   end
 
-  get '/login' do
-    erb :'/sessions/new'
+  post '/login' do
+    user_data = params[:user_data]
+    response = fusionauth_client.login({
+      :loginId => user_data[:email],
+      :password => user_data[:password],
+      :applicationId => application_id,
+      })
+    id = response.success_response.user.id
+    session[:user_id] = id
+    erb :'/users/show'
   end
 end

@@ -1,5 +1,3 @@
-<h1>Welcome to FusionAuth Guide for Sinatra Applications!</h1>
+<h1>Welcome to FusionAuth Guide for Sinatra Applications</h1>
 
-<h2>Congratulations, you are now logged in!</h2>
-
-<% require "pry"; binding.pry %>
+<h2>Congratulations <%= current_user.first_name + ' ' + current_user.last_name %>, you are now logged in!</h2>
