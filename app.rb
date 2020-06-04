@@ -43,7 +43,7 @@ class FusionAuthApp < Sinatra::Base
     user_data = params[:user_data]
     id = SecureRandom.uuid
 
-    result = fusionauth_client.register(id, {
+    response = fusionauth_client.register(id, {
       :user => {
         :firstName => user_data[:first_name],
         :lastName => user_data[:last_name],
@@ -56,7 +56,7 @@ class FusionAuthApp < Sinatra::Base
         :roles => %w(user)
       }
     })
-    if result.successful
+    if response.success_response
       session[:user_id] = id
       erb :'/users/show'
     else
@@ -83,9 +83,8 @@ class FusionAuthApp < Sinatra::Base
   end
 
   get '/user' do
-    require "pry"; binding.pry
     response = fusionauth_client.retrieve_user(current_user.id)
-    if response.successful
+    if response.success_response
       json response
     else
       flash[:error] = 'Cannot find user information. Please try again.'
