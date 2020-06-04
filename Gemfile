@@ -11,7 +11,8 @@ gem 'rspec'
 gem 'pry'
 gem 'dotenv'
 gem 'fusionauth_client'
-
+gem 'sinatra-flash'
+gem 'sinatra-json'
 
 group :test do
 	gem 'capybara'

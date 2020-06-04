@@ -2,6 +2,10 @@ require 'fusionauth/fusionauth_client'
 require 'sinatra/activerecord'
 require 'sinatra'
 require './models/user'
+require './models/identity'
+require './models/registration'
+require 'sinatra/flash'
+require 'sinatra/json'
 require 'pry'
 Tilt.register Tilt::ERBTemplate, 'html.erb'
 
@@ -52,8 +56,13 @@ class FusionAuthApp < Sinatra::Base
         :roles => %w(user)
       }
     })
-    session[:user_id] = id
-    erb :'/users/show'
+    if result.successful
+      session[:user_id] = id
+      erb :'/users/show'
+    else
+      flash[:error] = 'Registration unsuccessful. Please try again.'
+      erb :'/welcome/index'
+    end
   end
 
   post '/login' do
@@ -63,8 +72,23 @@ class FusionAuthApp < Sinatra::Base
       :password => user_data[:password],
       :applicationId => application_id,
       })
-    id = response.success_response.user.id
-    session[:user_id] = id
-    erb :'/users/show'
+    if response.success_response
+      id = response.success_response.user.id
+      session[:user_id] = id
+      erb :'/users/show'
+    else
+      flash[:error] = "Unsuccessful login. Please try again."
+      erb :'sessions/new'
+    end
+  end
+
+  get '/user' do
+    require "pry"; binding.pry
+    response = fusionauth_client.retrieve_user(current_user.id)
+    if response.successful
+      json response
+    else
+      flash[:error] = 'Cannot find user information. Please try again.'
+    end
   end
 end
