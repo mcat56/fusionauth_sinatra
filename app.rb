@@ -6,11 +6,13 @@ require './models/identity'
 require './models/registration'
 require 'sinatra/flash'
 require 'sinatra/json'
+require 'json'
 require 'pry'
 Tilt.register Tilt::ERBTemplate, 'html.erb'
 
 class FusionAuthApp < Sinatra::Base
   enable :sessions
+  register Sinatra::Flash
 
   def current_user
     @current_user ||= User.find(session[:user_id])
@@ -85,9 +87,25 @@ class FusionAuthApp < Sinatra::Base
   get '/user' do
     response = fusionauth_client.retrieve_user(current_user.id)
     if response.success_response
-      json response
+      json response.success_response.user
     else
       flash[:error] = 'Cannot find user information. Please try again.'
+    end
+  end
+
+  get '/edit' do
+    erb :'users/edit'
+  end
+
+  patch '/users/:id' do
+    request = params[:user_data].select {|k,v| v != '' }
+    response = fusionauth_client.patch_user(current_user.id, request)
+    if response.success_response
+      flash[:success] = 'Update successful!'
+      erb :'/users/show'
+    else
+      flash[:error] = 'Update unsuccessful. Please try again.'
+      erb :'/upate'
     end
   end
 end

@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 gem 'sinatra', require: 'sinatra/base'
 gem 'sinatra-activerecord'
 gem 'activerecord'
@@ -13,6 +12,7 @@ gem 'dotenv'
 gem 'fusionauth_client'
 gem 'sinatra-flash'
 gem 'sinatra-json'
+gem 'json'
 
 group :test do
 	gem 'capybara'
