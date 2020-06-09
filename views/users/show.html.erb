@@ -8,3 +8,9 @@
 <img src= <%= current_user.image_url %> />
 
 <h3>Name: <%= current_user.first_name + ' ' + current_user.last_name %></h3>
+
+
+<form action="/delete_account" method="post">
+  <input id="hidden" type="hidden" name="_method" value="delete">
+  <input type="submit" value="Delete Account" />
+</form>

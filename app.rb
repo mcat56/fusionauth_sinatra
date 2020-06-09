@@ -12,7 +12,6 @@ require 'pry'
 Tilt.register Tilt::ERBTemplate, 'html.erb'
 
 class FusionAuthApp < Sinatra::Base
-  enable :sessions
   helpers Sinatra::Cookies
   register Sinatra::Flash
   use Rack::Session::Cookie, :key => 'rack.session',
@@ -115,8 +114,8 @@ class FusionAuthApp < Sinatra::Base
   end
 
   patch '/users/:id' do
-    request = params[:user_data].select {|k,v| v != '' }
-    response = fusionauth_client.patch_user(current_user.id, request)
+    request = params[:user_data].select {|k,v| v != ''}
+    response = fusionauth_client.patch_user(current_user.id, json(request))
     if response.success_response
       flash[:success] = 'Update successful!'
       erb :'/users/show'
@@ -130,5 +129,11 @@ class FusionAuthApp < Sinatra::Base
     fusionauth_client.logout(true, nil)
     flash[:notice] = 'Logout Successful'
     erb  :'/welcome/index'
+  end
+
+  delete '/delete_account' do
+    fusionauth_client.delete_user(current_user.id)
+    flash[:notice] = 'Account Successfully deleted'
+    erb :'/welcome/index'
   end
 end
