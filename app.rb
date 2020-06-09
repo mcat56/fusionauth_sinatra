@@ -6,16 +6,21 @@ require './models/identity'
 require './models/registration'
 require 'sinatra/flash'
 require 'sinatra/json'
+require 'sinatra/cookies'
 require 'json'
 require 'pry'
 Tilt.register Tilt::ERBTemplate, 'html.erb'
 
 class FusionAuthApp < Sinatra::Base
   enable :sessions
+  helpers Sinatra::Cookies
   register Sinatra::Flash
+  use Rack::Session::Cookie, :key => 'rack.session',
+                             :path => '/',
+                             :secret => ENV['SECRET']
 
   def current_user
-    @current_user ||= User.find(session[:user_id])
+    @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
 
   def fusionauth_client
@@ -30,15 +35,27 @@ class FusionAuthApp < Sinatra::Base
   end
 
   get '/' do
-    erb :'welcome/index'
+    if current_user != nil
+      erb :'/users/show'
+    else
+      erb :'welcome/index'
+    end
   end
 
   get '/login' do
-    erb :'/sessions/new'
+    if current_user != nil
+      erb :'/users/show'
+    else
+      erb :'/sessions/new'
+    end
   end
 
   get '/register' do
-    erb :'/users/new'
+    if current_user != nil
+      erb :'/users/show'
+    else
+      erb :'/users/new'
+    end
   end
 
   post '/register' do
@@ -107,5 +124,11 @@ class FusionAuthApp < Sinatra::Base
       flash[:error] = 'Update unsuccessful. Please try again.'
       erb :'/upate'
     end
+  end
+
+  get '/logout' do
+    fusionauth_client.logout(true, nil)
+    flash[:notice] = 'Logout Successful'
+    erb  :'/welcome/index'
   end
 end

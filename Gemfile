@@ -13,6 +13,7 @@ gem 'fusionauth_client'
 gem 'sinatra-flash'
 gem 'sinatra-json'
 gem 'json'
+gem 'sinatra-contrib'
 
 group :test do
 	gem 'capybara'
