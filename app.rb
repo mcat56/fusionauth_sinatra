@@ -115,7 +115,8 @@ class FusionAuthApp < Sinatra::Base
 
   patch '/users/:id' do
     request = params[:user_data].select {|k,v| v != ''}
-    response = fusionauth_client.patch_user(current_user.id, json(request))
+    patch_request = { user: request }
+    response = fusionauth_client.patch_user(current_user.id, patch_request)
     if response.success_response
       flash[:success] = 'Update successful!'
       erb :'/users/show'
