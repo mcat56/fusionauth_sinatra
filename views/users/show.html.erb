@@ -1,16 +1,26 @@
-<h1>Welcome to FusionAuth Guide for Sinatra Applications</h1>
+<% flash_types.select{ |kind| flash.has?(kind) }.each do |kind| %>
+  <div class="flash <%= kind %>">
+    <%= flash[kind] %>
+  </div>
+<% end %>
 
-<h2>Congratulations <%= current_user.first_name + ' ' + current_user.last_name %>, you are now logged in!</h2>
-
-
-<h2>Profile Information</h2>
-
-<img src= <%= current_user.image_url %> />
-
-<h3>Name: <%= current_user.first_name + ' ' + current_user.last_name %></h3>
+<center>
+  <h1>Welcome to FusionAuth Guide for Sinatra Applications</h1>
 
 
-<form action="/delete_account" method="post">
-  <input id="hidden" type="hidden" name="_method" value="delete">
-  <input type="submit" value="Delete Account" />
-</form>
+  <h2>Welcome <%= current_user[:firstName] + ' ' + current_user[:lastName] %>!</h2>
+
+
+  <h2>Profile Information</h2>
+
+  <img src= <%= current_user[:imageUrl] %>, style="width:250px;height:300px;"/>
+
+  <h3>Name: <%= current_user[:firstName] + ' ' + current_user[:lastName] %></h3>
+
+  <h3>Email:  <%= current_user[:email] %> </h3>
+
+  <form action="/delete_account" method="post">
+    <input id="hidden" type="hidden" name="_method" value="delete">
+    <input type="submit" value="Delete Account" />
+  </form>
+</center>

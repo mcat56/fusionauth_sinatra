@@ -1,32 +1,36 @@
 require 'fusionauth/fusionauth_client'
-require 'sinatra/activerecord'
 require 'sinatra'
-require './models/user'
-require './models/identity'
-require './models/registration'
-require 'sinatra/flash'
 require 'sinatra/json'
 require 'sinatra/cookies'
 require 'json'
 require 'pry'
+require 'rack-flash'
+
 Tilt.register Tilt::ERBTemplate, 'html.erb'
 
 class FusionAuthApp < Sinatra::Base
   helpers Sinatra::Cookies
-  register Sinatra::Flash
+  helpers do
+    def flash_types
+      [:success, :notice, :warning, :error]
+    end
+  end
   use Rack::Session::Cookie, :key => 'rack.session',
                              :path => '/',
                              :secret => ENV['SECRET']
+  enable :sessions
+  use Rack::Flash
 
-  def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
-  end
 
   def fusionauth_client
     @client = FusionAuth::FusionAuthClient.new(
       'XyF5-fU3a-eeYMCx_PHaGAs18NMIGxRF4UPE1A8dA-U',
       'http://localhost:9011'
     )
+  end
+
+  def current_user
+    @current_user ||= fusionauth_client.retrieve_user(session[:user_id]).success_response.user if session[:user_id]
   end
 
   def application_id
@@ -60,11 +64,11 @@ class FusionAuthApp < Sinatra::Base
   post '/register' do
     user_data = params[:user_data]
     id = SecureRandom.uuid
-
     response = fusionauth_client.register(id, {
       :user => {
         :firstName => user_data[:first_name],
         :lastName => user_data[:last_name],
+        :imageUrl => user_data[:image_url],
         :email => user_data[:email],
         :password => user_data[:password]
       },
@@ -76,9 +80,11 @@ class FusionAuthApp < Sinatra::Base
     })
     if response.success_response
       session[:user_id] = id
+      flash[:success] = "Registration Successful!"
       erb :'/users/show'
     else
-      flash[:error] = 'Registration unsuccessful. Please try again.'
+      require "pry"; binding.pry
+      flash[:error] = "Registration unsuccessful. Please try again."
       erb :'/welcome/index'
     end
   end
@@ -105,7 +111,7 @@ class FusionAuthApp < Sinatra::Base
     if response.success_response
       json response.success_response.user
     else
-      flash[:error] = 'Cannot find user information. Please try again.'
+      flash[:error] = "Cannot find user information. Please try again."
     end
   end
 
@@ -118,23 +124,23 @@ class FusionAuthApp < Sinatra::Base
     patch_request = { user: request }
     response = fusionauth_client.patch_user(current_user.id, patch_request)
     if response.success_response
-      flash[:success] = 'Update successful!'
+      flash[:success] = "Update successful!"
       erb :'/users/show'
     else
-      flash[:error] = 'Update unsuccessful. Please try again.'
+      flash[:error] = "Update unsuccessful. Please try again."
       erb :'/upate'
     end
   end
 
   get '/logout' do
     fusionauth_client.logout(true, nil)
-    flash[:notice] = 'Logout Successful'
+    flash[:notice] = "Logout Successful"
     erb  :'/welcome/index'
   end
 
   delete '/delete_account' do
     fusionauth_client.delete_user(current_user.id)
-    flash[:notice] = 'Account Successfully deleted'
+    flash[:notice] = "Account Successfully deleted"
     erb :'/welcome/index'
   end
 end

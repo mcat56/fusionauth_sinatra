@@ -1,3 +1,9 @@
+<% flash_types.select{ |kind| flash.has?(kind) }.each do |kind| %>
+  <div class="flash <%= kind %>">
+    <%= flash[kind] %>
+  </div>
+<% end %>
+
 <center>
 <h1>FusionAuth Guide for Sinatra Applications</h1>
 
