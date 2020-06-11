@@ -1,0 +1,9 @@
+<h1>Update Profile Information</h1>
+
+<form class="update" action="/users/<%= current_user.id %>" method="post">
+  <input id="hidden" type="hidden" name="_method" value="patch">
+  <p>First Name: <input type = "text" name="user_data[firstName]"></p>
+  <p>Last Name: <input type = "text" name="user_data[lastName]"></p>
+  <p>Email: <input type = "text" name="user_data[email]"></p>
+  <input type="submit">
+</form>

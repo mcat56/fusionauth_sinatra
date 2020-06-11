@@ -1,9 +1,15 @@
+<% flash_types.select{ |kind| flash.has?(kind) }.each do |kind| %>
+  <div class="flash <%= kind %>">
+    <%= flash[kind] %>
+  </div>
+<% end %>
+
 <center>
 <h1>FusionAuth Guide for Sinatra Applications</h1>
 
 <a href='/register'>Register </a>
 </br>
 </br>
-<a href="#{url 'http://localhost:9011/oauth2/authorize?client_id=9eef04cd-b188-42fa-b535-1962ff788b46&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A4567%2Foauth-redirect'}">Login </a>
+<a href='/login'>Login </a>
 
 </center>
