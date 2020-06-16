@@ -136,6 +136,8 @@ class FusionAuthApp < Sinatra::Base
 
   get '/logout' do
     fusionauth_client.logout(true, nil)
+    session.clear
+    cookies.clear
     flash[:notice] = "Logout Successful"
     erb  :'/welcome/index'
   end
