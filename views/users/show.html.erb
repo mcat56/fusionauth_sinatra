@@ -19,7 +19,9 @@
 
   <h3>Email:  <%= current_user[:email] %> </h3>
 
-  <a href='/edit'>Update Profile</a>
+  <form action="/edit" >
+    <input type="submit" value="Update Profile" />
+  </form>
 
   <form action="/delete_account" method="post">
     <input id="hidden" type="hidden" name="_method" value="delete">
