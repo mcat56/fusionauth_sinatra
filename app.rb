@@ -1,8 +1,8 @@
 require 'fusionauth/fusionauth_client'
 require 'sinatra'
 require 'sinatra/json'
-require 'sinatra/cookies'
 require 'json'
+require 'sinatra/cookies'
 require 'pry'
 require 'rack-flash'
 
@@ -18,7 +18,6 @@ class FusionAuthApp < Sinatra::Base
   use Rack::Session::Cookie, :key => 'rack.session',
                              :path => '/',
                              :secret => ENV['SECRET']
-  enable :sessions
   use Rack::Flash
 
 
@@ -106,10 +105,13 @@ class FusionAuthApp < Sinatra::Base
     end
   end
 
-  get '/user' do
+  get '/user', :provides => :json do
     response = fusionauth_client.retrieve_user(current_user.id)
     if response.success_response
-      json response.success_response.user
+      new_response = response.success_response.user.marshal_dump
+      registration = new_response[:registrations][0].marshal_dump
+      new_response[:registrations][0] = registration
+      json new_response
     else
       flash[:error] = "Cannot find user information. Please try again."
     end
