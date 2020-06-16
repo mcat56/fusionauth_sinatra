@@ -4,7 +4,13 @@
   </div>
 <% end %>
 
+<form action="/logout" >
+  <input type="submit" value="Logout" style="position: absolute; top: 8px; right: 16px" />
+</form>
+
 <center>
+  </br>
+  </br> 
   <h1>Welcome to FusionAuth Guide for Sinatra Applications</h1>
 
 
@@ -18,6 +24,10 @@
   <h3>Name: <%= current_user[:firstName] + ' ' + current_user[:lastName] %></h3>
 
   <h3>Email:  <%= current_user[:email] %> </h3>
+
+  <form action="/edit" >
+    <input type="submit" value="Update Profile" />
+  </form>
 
   <form action="/delete_account" method="post">
     <input id="hidden" type="hidden" name="_method" value="delete">
