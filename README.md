@@ -12,8 +12,8 @@ information, logout, and delete their accounts.
 FusionAuth is a platform and framework agnositc modern CIAM tool to integrate authentication, authorization and
 user management into your applications. FusionAuth supports many applications in one easy to use browser interface. Features are exposed in API's that allow flexibility and customizable user experiences. In this tutorial we will demonstrate integrating FusionAuth with the light-weight Ruby framework Sinatra.
 
-The best way to integrate with Sinatra is using the [FusionAuth Ruby client library](https://fusionauth.io/docs/v1/tech/client-libraries/ruby). The API will provide all of the necessary methods
-to create user access management. 
+The application uses the [FusionAuth Ruby client library](https://fusionauth.io/docs/v1/tech/client-libraries/ruby). The API will provide all of the necessary methods
+to create user access management with FusionAuth in Sinatra.
 
 ### Set Up
 - Download this repository to begin.
