@@ -82,7 +82,6 @@ class FusionAuthApp < Sinatra::Base
       flash[:success] = "Registration Successful!"
       erb :'/users/show'
     else
-      require "pry"; binding.pry
       flash[:error] = "Registration unsuccessful. Please try again."
       erb :'/welcome/index'
     end
@@ -144,7 +143,9 @@ class FusionAuthApp < Sinatra::Base
 
   delete '/delete_account' do
     fusionauth_client.delete_user(current_user.id)
-    flash[:notice] = "Account Successfully deleted"
+    session.clear
+    cookies.clear
+    flash[:notice] = "Account successfully deleted"
     erb :'/welcome/index'
   end
 end
