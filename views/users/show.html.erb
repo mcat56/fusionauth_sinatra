@@ -10,12 +10,11 @@
 
 <center>
   </br>
-  </br> 
-  <h1>Welcome to FusionAuth Guide for Sinatra Applications</h1>
+  </br>
+  <h1><%= current_user[:firstName] + ' ' + current_user[:lastName] %>'s SCRUM Board</h1>
 
-
-  <h2>Welcome <%= current_user[:firstName] + ' ' + current_user[:lastName] %>!</h2>
-
+  <h2>To Do Tasks: <%= rand(100) %></h2>
+  <h2>Completed Tasks: <%= rand(100) %></h2>
 
   <h2>Profile Information</h2>
 
