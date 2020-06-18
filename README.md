@@ -15,6 +15,10 @@ user management into your applications. FusionAuth supports many applications in
 The application uses the [FusionAuth Ruby client library](https://fusionauth.io/docs/v1/tech/client-libraries/ruby). The API will provide all of the necessary methods
 to create user access management with FusionAuth in Sinatra.
 
+### Dependencies
+- Ruby (2.5.0)
+- Bundler (2.1.4)
+
 ### Set Up
 - Download this repository to begin.
 - Run bundle command to install gems
