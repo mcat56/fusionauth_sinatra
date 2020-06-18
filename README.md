@@ -1,9 +1,9 @@
 # JSCRUM
-## SCRUM by Jared
-## Pied Piper Agile Management Application
+SCRUM by Jared
+Pied Piper Agile Management Application
 
 ### About
-This repository is a simple Sinatra application, "JSCRUM", which integrates FusionAuth
+This repository is a mock of an extremely simple Sinatra application, "JSCRUM", which integrates FusionAuth
 for user management. Users are able to login, logout, view and update profile
 information, logout, and delete their accounts.
 
